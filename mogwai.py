@@ -41,5 +41,10 @@ address = ''
 get_balance(address)
 
 
+for balance in liste_address :
+    get_balance(balance)
+
+
+
 
 

@@ -17,7 +17,7 @@ def get_balance(address) :
     print(result.value['data']['free'])
 
 
-get_balance(liste_address[0])
+# get_balance(liste_address[0])
 
 
 def transfer(dest) :
@@ -37,7 +37,7 @@ def transfer(dest) :
     print(f"Block Hash: {recu.block_hash}")
     print(f"Block Number: {recu.block_number}")
 
-address = '5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr'
+address = ''
 get_balance(address)
 
 

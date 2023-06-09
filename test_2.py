@@ -17,7 +17,7 @@ def binaire(numb) :
     return numb
 
 
-#gradio.Interface(fn, inputs, outputs)
+#la  classe gradio.Interface(fn, inputs, outputs)
 
 test_room = gradio.Interface(binaire, "number", "text")
 #

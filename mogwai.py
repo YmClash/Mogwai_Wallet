@@ -37,12 +37,19 @@ def transfer(dest) :
     print(f"Block Hash: {recu.block_hash}")
     print(f"Block Number: {recu.block_number}")
 
-address = ''
-get_balance(address)
-
+# address = ''
+# get_balance(address)
+transfer(liste_address[0])
 
 for balance in liste_address :
     get_balance(balance)
+
+
+print()
+
+get_balance(liste_address[0])
+
+
 
 
 

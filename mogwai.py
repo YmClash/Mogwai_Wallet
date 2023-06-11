@@ -1,6 +1,18 @@
+import os
+from dotenv import load_dotenv
+from web3 import Web3
+
 from substrateinterface import SubstrateInterface, Keypair
 
+
+
 substrate = SubstrateInterface(url="ws://127.0.0.1:9944")
+
+local_host = Web3.HTTPProvider(substrate)
+
+etat = local_host.isConnected()
+print(etat)
+
 
 liste_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr',
                  '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
@@ -37,12 +49,6 @@ def transfer(dest) :
     print(f"Block Hash: {recu.block_hash}")
     print(f"Block Number: {recu.block_number}")
 
-# address = ''
-# get_balance(address)
-transfer(liste_address[0])
-
-for balance in liste_address :
-    get_balance(balance)
 
 
 print()

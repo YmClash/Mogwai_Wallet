@@ -8,10 +8,10 @@ from substrateinterface import SubstrateInterface, Keypair
 
 substrate = SubstrateInterface(url="ws://127.0.0.1:9944")
 
-local_host = Web3.HTTPProvider(substrate)
+# local_host = Web3.HTTPProvider(substrate)
 
-etat = local_host.isConnected()
-print(etat)
+# etat = local_host.isConnected()
+# print(etat)
 
 
 liste_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr',
@@ -26,7 +26,7 @@ liste_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr',
 
 def get_balance(address) :
     result = substrate.query('System', 'Account', [address])
-    print(result.value['data']['free'])
+    print(f"Votre Balance est de : {result.value['data']['free']}")
 
 
 # get_balance(liste_address[0])
@@ -53,7 +53,9 @@ def transfer(dest) :
 
 print()
 
-get_balance(liste_address[0])
+for  balance in liste_address:
+    print(get_balance(balance))
+
 
 
 

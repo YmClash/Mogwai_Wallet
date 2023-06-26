@@ -8,18 +8,28 @@ def generate_mnemonic():
 
     return keypair_seed
 
-def isvalide(generate_mnemonic):
-    validation = Keypair.validate_mnemonic(generate_mnemonic)
+def isvalide():
+    validation = Keypair.validate_mnemonic(generate_mnemonic())
     return validation
+
+def create_wallet():
+    wallet = Keypair.create_from_mnemonic(generate_mnemonic,ss58_format=42,crypto_type=KeypairType.SR25519,language_code=MnemonicLanguageCode.ENGLISH)
+
+
 
 
 with gradio.Blocks(title="Ajuna Wallet creator ") as demo:
     name = gradio.Textbox(label="Enter your name")
     output = gradio.Textbox(label="Phrase mnemonique ", )
     output_2 = gradio.Textbox(label="valide")
+    output_3 = gradio.Textbox(label="Ajuna Wallet Adresse ")
     gen_button = gradio.Button("Genere Mno")
-    valide_button = gradio.Button(lambda :isvalide)
+    valide_button = gradio.Button("Validation")
+    create_wallet_button = gradio.Button("Create Ajuna wallet")
     gen_button.click(fn=generate_mnemonic, inputs=None, outputs=output, )
+    valide_button.click(fn=isvalide,inputs=None,outputs=output_2)
+    create_wallet_button.click
+
 
     demo.launch()
 

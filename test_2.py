@@ -5,8 +5,9 @@ import time
 import gradio
 
 
-def dom(numb) :
-    numb = random.randint(1, 1000)
+def dom(number) :
+    numb = random.randint(1, number)
+
     # list = [random.randint(1, 1000) for o in range(1, 10)]
     return numb
 
@@ -19,7 +20,7 @@ def binaire(numb) :
 
 #la  classe gradio.Interface(fn, inputs, outputs)
 
-test_room = gradio.Interface(binaire, "number", "text")
+test_room = gradio.Interface(dom, "number", "number")
 #
 #
 #

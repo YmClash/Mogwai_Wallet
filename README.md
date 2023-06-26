@@ -1,2 +1,2 @@
 Mogwai Wallet 
-create simple Ajuna wallet 
+create simple Ajuna wallet [README.md](README.md)

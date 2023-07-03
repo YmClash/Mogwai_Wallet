@@ -1,19 +1,28 @@
 import sr25519
+import web3
 import gradio
 from substrateinterface import Keypair, MnemonicLanguageCode, KeypairType
 
 
 def generate_mnemonic():
     keypair_seed = Keypair.generate_mnemonic(words=12, language_code=MnemonicLanguageCode.ENGLISH)
-
+    print(keypair_seed)
     return keypair_seed
 
+momo = generate_mnemonic()
+
 def isvalide():
-    validation = Keypair.validate_mnemonic(generate_mnemonic())
+    validation = Keypair.validate_mnemonic(momo)
     return validation
 
 def create_wallet():
-    wallet = Keypair.create_from_mnemonic(generate_mnemonic,ss58_format=42,crypto_type=KeypairType.SR25519,language_code=MnemonicLanguageCode.ENGLISH)
+    wallet = Keypair.create_from_mnemonic(momo,ss58_format=42,crypto_type=KeypairType.SR25519,language_code=MnemonicLanguageCode.ENGLISH)
+    print(wallet)
+    print(type(wallet))
+    return f"<Kepair (address={wallet.ss58_address}"
+
+def clear():
+    return 0
 
 
 
@@ -26,9 +35,12 @@ with gradio.Blocks(title="Ajuna Wallet creator ") as demo:
     gen_button = gradio.Button("Genere Mno")
     valide_button = gradio.Button("Validation")
     create_wallet_button = gradio.Button("Create Ajuna wallet")
+    clear_button = gradio.Button("Nettoyer")
     gen_button.click(fn=generate_mnemonic, inputs=None, outputs=output, )
     valide_button.click(fn=isvalide,inputs=None,outputs=output_2)
-    create_wallet_button.click
+    create_wallet_button.click(fn=create_wallet,inputs=None,outputs=output_3)
+    clear_button.click(fn=clear,inputs=None,outputs=None)
+
 
 
     demo.launch()

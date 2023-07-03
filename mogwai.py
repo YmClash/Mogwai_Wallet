@@ -24,17 +24,22 @@ ymc_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr']
 
 def get_balance(address):
     result = rpc_url.query('System', 'Account', [address])
-    print(result.value['data']['free'])
-    return f"Votre Balance est de : {result.value['data']['free']} Bajun"
+    # print(result.value['data']['free'])
+    return f"Votre Balance est de : {result.value['data']['free']:.3f} Bajun"
 
+def salut(name):
+    return f"Salut !!! {name}"
 
 print(rpc_url.get_chain_head())
 
 with gradio.Blocks(title="Ajuna Wallet Creator") as app:
     adresse = gradio.Textbox(label="enter your address")
+    nom = gradio.Textbox(label="enter your name")
     balance_output = gradio.Textbox(label="Balance")
-    run_button = gradio.Button(label="RUN")
+    run_button = gradio.Button("RUN")
+    salut_button = gradio.Button("Salu")
     run_button.click(fn=get_balance,inputs=adresse,outputs=balance_output)
+    salut_button.click(fn=salut,inputs=nom,outputs=balance_output)
 
     app.launch(debug=True)
 

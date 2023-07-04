@@ -67,7 +67,7 @@ with gradio.Blocks(title="Ajuna Wallet creator ") as demo:
 # print()
 #
 # print("Keypair Seed enregistrées dans  le fichier cle_publique.txt")
-
-demo = gradio.Interface(fn=generate_mnemonic, inputs=None, outputs=["text"],title="Ajuna Wallet creator ")
-
-demo.launch()
+#
+# demo = gradio.Interface(fn=generate_mnemonic, inputs=None, outputs=["text"],title="Ajuna Wallet creator ")
+#
+# demo.launch()

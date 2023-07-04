@@ -14,6 +14,12 @@ def greet(name):
     return "HELLO" + name
 
 
-demo = gradio.Interface(fn=gen_number, inputs="number", outputs="text")
+# demo = gradio.Interface(fn=gen_number, inputs="number", outputs="text")
+#
+# demo.launch()
 
-demo.launch()
+balance = 1234.56789012
+decimal_precision = 8
+formatted_balance = str(round(balance, decimal_precision))
+print(formatted_balance)
+

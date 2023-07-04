@@ -6,29 +6,20 @@ from substrateinterface import SubstrateInterface, Keypair, MnemonicLanguageCode
 
 rpc_url = SubstrateInterface(url="wss://rpc-parachain.bajun.network")
 # substrate = SubstrateInterface(url="ws://127.0.0.1:9944")
-# local_host = Web3.HTTPProvider(subst
 # etat = local_host.isConnected()
 # print(etat)
 
-# liste_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr',
-                 # '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY',
-                 # '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty',
-                 # '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y',
-                 # '5DAAnrj7VHTznn2AWBemMuyBwZWs6FNFjdyVXUeYum3PTXFy',
-                 # '5HGjWAeFDfFCWPsjFQdVV2Msvz2XtMktvgocEZcCj68kUMaw',
-                 # '5CiPPseXPECbkjWCa6MnjNokrgYjMqmKndv2rSnekmSK2DjL',
-#                ]
-
 ymc_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr']
 
+def salut(name):
+    return f"Salut !!! {name}"
 
 def get_balance(address):
     result = rpc_url.query('System', 'Account', [address])
     # print(result.value['data']['free'])
-    return f"Votre Balance est de : {result.value['data']['free']:.3f} Bajun"
+    return f"Votre Balance est de : {result.value['data']['free']:.20f} Bajun"
 
-def salut(name):
-    return f"Salut !!! {name}"
+
 
 print(rpc_url.get_chain_head())
 

@@ -1,21 +1,17 @@
-import gradio
 import random
 
-numb = [random.randint(1, 100) for i in range(1)]
-print(numb)
+
+gen
+
+nombre_de_cycle = 0
+passage_detecter = False
+etat_passe = []
+
+for i in range(10):
 
 
-def gen_number(number):
-    numb = [random.randint(1, 100) for i in range(number)]
-    return numb
 
 
-def greet(name):
-    return "HELLO" + name
-
-
-# demo = gradio.Interface(fn=gen_number, inputs="number", outputs="text")
-#
 # demo.launch()
 
 balance = 1234.56789012

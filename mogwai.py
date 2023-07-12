@@ -21,7 +21,7 @@ def get_balance(address) :
     balance = Decimal(result.value['data']['free']) / Decimal(10 ** 12)
     balance_format = format(balance, '.2f')
     print(type(result.value['data']['free']))
-    return f"Votre Balance est de : {balance_format} Bajun"
+    return f"Votre Balance est de : {balance_format} Bajun  ~"
 
 
 print(rpc_url.get_chain_head())

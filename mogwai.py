@@ -1,8 +1,7 @@
 import os
-from dotenv import load_dotenv
-from web3 import Web3
 import gradio
 from substrateinterface import SubstrateInterface, Keypair, MnemonicLanguageCode, KeypairType
+from decimal import Decimal, getcontext
 
 rpc_url = SubstrateInterface(url="wss://rpc-parachain.bajun.network")
 # substrate = SubstrateInterface(url="ws://127.0.0.1:9944")
@@ -11,33 +10,35 @@ rpc_url = SubstrateInterface(url="wss://rpc-parachain.bajun.network")
 
 ymc_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr']
 
-def salut(name):
+
+def salut(name) :
     return f"Salut !!! {name}"
 
-def get_balance(address):
-    result = rpc_url.query('System', 'Account', [address])
-    # print(result.value['data']['free'])
-    return f"Votre Balance est de : {result.value['data']['free']:.20f} Bajun"
 
+def get_balance(address) :
+    getcontext().prec = 15
+    result = rpc_url.query('System', 'Account', [address])
+    balance = Decimal(result.value['data']['free']) / Decimal(10 ** 12)
+    balance_format = format(balance, '.2f')
+    print(type(result.value['data']['free']))
+    return f"Votre Balance est de : {balance_format} Bajun"
 
 
 print(rpc_url.get_chain_head())
 
-with gradio.Blocks(title="Ajuna Wallet Creator") as app:
+with gradio.Blocks(title="Ajuna Wallet Creator") as app :
     adresse = gradio.Textbox(label="enter your address")
     nom = gradio.Textbox(label="enter your name")
     balance_output = gradio.Textbox(label="Balance")
     run_button = gradio.Button("RUN")
     salut_button = gradio.Button("Salu")
-    run_button.click(fn=get_balance,inputs=adresse,outputs=balance_output)
-    salut_button.click(fn=salut,inputs=nom,outputs=balance_output)
+    run_button.click(fn=get_balance, inputs=adresse, outputs=balance_output)
+    salut_button.click(fn=salut, inputs=nom, outputs=balance_output)
 
     app.launch(debug=True)
 
 # get_balance(liste_address[0])
 get_balance(ymc_address[0])
-
-
 
 # def transfer(dest):
 #     call = rpc_url.compose_call(

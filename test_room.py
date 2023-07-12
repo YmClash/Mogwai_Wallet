@@ -1,21 +1,22 @@
 import random
 
-
-gen
-
-nombre_de_cycle = 0
-passage_detecter = False
-etat_passe = []
-
-for i in range(10):
+numb = 1366618901674919
+nn= "{:,.0f}".format(numb / 1000)
+print(nn)
+nnn = str(numb)
 
 
 
+from decimal import Decimal, getcontext
 
-# demo.launch()
+# Définir la précision de decimal
+getcontext().prec = 15
 
-balance = 1234.56789012
-decimal_precision = 8
-formatted_balance = str(round(balance, decimal_precision))
-print(formatted_balance)
+# Supposons que vous ayez cette quantité de crypto-monnaie
 
+quantite_crypto = Decimal(1366618901674919) / Decimal(10**12)
+
+# Formatage pour afficher avec 12 chiffres après la virgule
+formatted_crypto = format(quantite_crypto, '.2f')
+
+print(formatted_crypto)

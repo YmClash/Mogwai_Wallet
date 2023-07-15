@@ -1,2 +1,3 @@
 Mogwai Wallet 
-create simple Ajuna wallet [README.md](README.md)
+create a simple Ajuna/Bajun wallet [README.md](README.md)
+Check Balance

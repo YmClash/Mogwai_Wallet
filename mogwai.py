@@ -9,6 +9,7 @@ import requests
 
 
 
+
 load_dotenv()
 key = os.getenv("COINMARKKETCAP_API_KEY")
 mexc_client = Spot(api_key=os.getenv('MEXC_ACCESS_KEY'),api_secret=os.getenv('MEXC_SECRET_KEY'))
@@ -20,8 +21,7 @@ rpc_url = SubstrateInterface(url="wss://rpc-parachain.bajun.network")
 # etat = local_host.isConnected()
 # print(etat)
 
-ymc_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr']
-
+# ymc_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr']
 
 
 
@@ -29,6 +29,7 @@ ymc_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr']
 
 
 def salut(name) :
+    print(name)
     return f"Salut !!! {name}"
 
 
@@ -42,7 +43,7 @@ def get_balance(address) :
     result = rpc_url.query('System', 'Account', [address])
     balance = Decimal(result.value['data']['free']) / Decimal(10 ** 12)
     balance_format = float(format(balance, '.2f'))
-    print(type(result.value['data']['free']))
+    # print(type(result.value['data']['free']))
     print(address)
     balance_usd = prix_baju * balance_format
     return f"Votre Balance est de : {balance_format} Bajun  ~ {balance_usd:.2f}$ USD"
@@ -50,13 +51,13 @@ def get_balance(address) :
 
 print(rpc_url.get_chain_head())
 
-description2 = 'h1 style="font-size:50px;text-align:center;"> AJUNA Balanc Checker</h1>'
-description = "AJUNA Balance Checker by YmC ^^"
-desk = "Ajuna Balance checker 0.1 "
+description2 = 'h1 style="font-size:50px;text-align:center;"> Bajun Balanc Checker</h1>'
+description = "Bajun Balance Checker ^^"
+desk = "Mogwai Wallet checker 0.0.1 "
 
 
-with gradio.Blocks(title="Ajuna Wallet Checker..by YmC") as app :
-    title = gradio.Label(description)
+with gradio.Blocks(title="Mogwai Wallet Checker..by YmC") as app :
+    title = gradio.Label(description,label=desk)
     adresse = gradio.Textbox(label="enter your address")
     nom = gradio.Textbox(label="enter your name")
     balance_output = gradio.Textbox(label="Balance")
@@ -65,10 +66,10 @@ with gradio.Blocks(title="Ajuna Wallet Checker..by YmC") as app :
     run_button.click(fn=get_balance, inputs=adresse, outputs=balance_output)
     salut_button.click(fn=salut, inputs=nom, outputs=balance_output)
 
-    app.launch(debug=True)
+    app.launch(share=True,debug=True)
 
 # get_balance(liste_address[0])
-get_balance(ymc_address[0])
+# get_balance(ymc_address[0])
 
 # def transfer(dest):
 #     call = rpc_url.compose_call(

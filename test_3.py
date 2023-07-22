@@ -1,6 +1,7 @@
 import sr25519
 import web3
 import gradio
+import m
 from substrateinterface import Keypair, MnemonicLanguageCode, KeypairType
 
 
@@ -12,6 +13,7 @@ def generate_mnemonic():
 momo = generate_mnemonic()
 
 def isvalide():
+
     validation = Keypair.validate_mnemonic(momo)
     return validation
 

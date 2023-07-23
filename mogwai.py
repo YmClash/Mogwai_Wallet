@@ -59,7 +59,7 @@ desk = "Mogwai Wallet checker 0.0.1 "
 with gradio.Blocks(title="Mogwai Wallet Checker..by YmC") as app :
     title = gradio.Label(description,label=desk)
     adresse = gradio.Textbox(label="enter your address")
-    nom = gradio.Textbox(label="enter your name")
+    nom = gradio.Textbox(label="enter your name or not ")
     balance_output = gradio.Textbox(label="Balance")
     run_button = gradio.Button("RUN")
     salut_button = gradio.Button("Say Holla To YmC ^^ ")

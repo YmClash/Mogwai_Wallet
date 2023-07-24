@@ -52,7 +52,7 @@ def get_balance(address) :
 print(rpc_url.get_chain_head())
 
 description2 = 'h1 style="font-size:50px;text-align:center;"> Bajun Balanc Checker</h1>'
-description = "Bajun Balance Checker ^^"
+description = "Bajun Balance Checker "
 desk = "Mogwai Wallet checker 0.0.1 "
 
 
@@ -62,7 +62,11 @@ with gradio.Blocks(title="Mogwai Wallet Checker..by YmC") as app :
     nom = gradio.Textbox(label="enter your name or not ")
     balance_output = gradio.Textbox(label="Balance")
     run_button = gradio.Button("RUN")
-    salut_button = gradio.Button("Say Holla To YmC ^^ ")
+    salut_button = gradio.Button("Say Holla To YmC :D ")
+
+    # ensuite   ici  on commence  a mappe tout  les  bouton , output,  et  fonction  respective
+
+
     run_button.click(fn=get_balance, inputs=adresse, outputs=balance_output)
     salut_button.click(fn=salut, inputs=nom, outputs=balance_output)
 

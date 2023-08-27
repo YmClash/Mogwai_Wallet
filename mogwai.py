@@ -21,7 +21,8 @@ rpc_url = SubstrateInterface(url="wss://rpc-parachain.bajun.network")
 # etat = local_host.isConnected()
 # print(etat)
 
-# ymc_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr']
+# ymc_address = ['5G6s3tvwCbQ7MZWYmUrZkG8iYxYwAG8usqM57yJF8bU8Dbvr',
+#                 'bUP3Rbwz3BtrFpn7z18sFLqmLZm8ftVmxMxN6NeoqCjVYsyVy']
 
 
 
@@ -46,7 +47,7 @@ def get_balance(address) :
     # print(type(result.value['data']['free']))
     print(address)
     balance_usd = prix_baju * balance_format
-    return f"Votre Balance est de : {balance_format} Bajun  ~ {balance_usd:.2f}$ USD"
+    return f"Your Balance  : {balance_format} Bajun  ~ {balance_usd:.2f}$ USD"
 
 
 print(rpc_url.get_chain_head())

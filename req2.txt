@@ -1,2 +1,5 @@
-requests==2.31.0
-requests-cache==0.4.13
+substrateinterface
+mexc_sdk
+gradio
+requests
+requests-cache

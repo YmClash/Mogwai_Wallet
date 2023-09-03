@@ -1,7 +1,8 @@
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
-url = 'https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/trending/gainers-losers'
+import pformat
+url = 'https://polkadot.api.subscan.io/api/scan/metadata'
 parameters = {
   'start':'1',
   'limit':'50',
@@ -16,7 +17,7 @@ session.headers.update(headers)
 try:
   response = session.get(url, params=parameters)
   data = json.loads(response.text)
-  print(data)
+  pformat(data)
 except (ConnectionError, Timeout, TooManyRedirects) as e:
   print(e)
 

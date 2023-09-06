@@ -1,7 +1,7 @@
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
-import pformat
+import pprint
 url = 'https://polkadot.api.subscan.io/api/scan/metadata'
 parameters = {
   'start':'1',
@@ -17,7 +17,7 @@ session.headers.update(headers)
 try:
   response = session.get(url, params=parameters)
   data = json.loads(response.text)
-  pformat(data)
+  pprint(data)
 except (ConnectionError, Timeout, TooManyRedirects) as e:
   print(e)
 

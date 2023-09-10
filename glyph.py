@@ -3,6 +3,9 @@ import fastapi
 from typing import Dict
 from pathlib import Path
 from matplotlib.patches import Circle, Rectangle
+from substrateinterface import SubstrateInterface, Keypair, MnemonicLanguageCode, KeypairType
+from web3 import Web3
+
 
 
 id_to_seed: Dict[int, str] = {}
@@ -31,36 +34,74 @@ def get_motif(id:int):
     index = id % 83
 
     if index < 20:
-        scheme = 1
+        motif = 1
     elif index < 35:
-        scheme = 2
+        motif = 2
     elif index < 48:
-        scheme = 3
+        motif = 3
     elif index < 59:
-        scheme = 4
+        motif = 4
     elif index < 68:
-        scheme = 5
+        motif = 5
     elif index < 73:
-        scheme = 6
+        motif = 6
     elif index < 77:
-        scheme = 7
+        motif = 7
     elif index < 80:
-        scheme = 8
+        motif = 8
     elif index < 82:
-        scheme = 9
+        motif = 9
     else:
-        scheme = 10
+        motif = 10
 
-    return MOTIF[scheme]
-
-
+    return MOTIF[motif]
 
 
 
-def keccak256(data: bytes) -> bytes :
+
+
+def gen_glyph(seed):
+    a = Web3.toInt(Web3.solidityKeccak(['uint256'], [seed])[-20:])
+    mod = (a % 11) + 5
+    symbols = get_motif(a)
+    # output = bytearray(USIZE * (USIZE + 3) + 30)
+    output = []
+
+    for i in range(SIZE):
+        y = (2 * (i - HALF_SIZE) + 1)
+
+        if a % 3 == 1:
+            y = -y
+        elif a % 3 == 2:
+            y = abs(y)
+
+        y = y * a
+
+        for j in range(SIZE):
+            x = 2 * (j-HALF_SIZE) + 1
+
+            if a%2 == 1:
+                x = abs(x)
+
+            x = x * a
+            v = int((x*y/ONE) % mod)
+
+            if v < 5:
+                valeur = chr(symbols[v])
+            else:
+                valeur = '.'
+
+            output.append(valeur)
+        output.append("\n")
+
+    art = "".join(output)
+    return art
+
+
+
+
+
     return hashlib.sha3_256(data).digest()
-
-
 
 
 def draw(keccak256: bytes):

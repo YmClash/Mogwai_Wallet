@@ -2,6 +2,7 @@ import hashlib
 import fastapi
 from typing import Dict
 from pathlib import Path
+import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Rectangle
 from substrateinterface import SubstrateInterface, Keypair, MnemonicLanguageCode, KeypairType
 from web3 import Web3
@@ -158,7 +159,7 @@ def mint(seed,out_path):
 
     fig = draw(draw_string)
 
-    fig.savefig(p/f"Mogwai_{seed}.png", pad_inches=1)
+    fig.savefig(p, format= png, pad_inches=1)
 
     plt.close("all")
 
@@ -214,7 +215,7 @@ def mint(seed,out_path):
     #         return output.decode(encoding='utf-8', errors='strict')
 
 
-id_to_seed[1] = "YmC"
-id_to_symbol[1] = 1
-
-print(draw(1))
+# id_to_seed[1] = "YmC"
+# id_to_symbol[1] = 1
+#
+# print(draw(1))

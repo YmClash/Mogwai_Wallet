@@ -155,7 +155,7 @@ def mint(seed,out_path):
 
     draw_string = art.replace("\n","")
     if len(set(draw_string)) == 1:
-        raise ValueError("Glyph may be Dust ")
+        raise ValueError("Maybe Glyph turn to Dust ")
 
     fig = draw(draw_string)
 

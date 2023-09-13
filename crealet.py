@@ -1,5 +1,4 @@
 import os
-import eth
 from dotenv import load_dotenv
 from eth_account import Account
 from eth_account.signers.local import LocalAccount

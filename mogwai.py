@@ -7,7 +7,6 @@ from mexc_sdk import Spot
 import requests
 
 
-Keypair.J
 
 
 

@@ -17,4 +17,4 @@ jobs:
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: git push https://YmcAI:$HF_TOKEN@huggingface.co/spaces/YmcAI/mogwai-wallet main
+        run: git push https://YmcAI:$HF_TOKEN@huggingface.co/spaces/YmcAI/Mog-wallet main

@@ -159,7 +159,7 @@ def mint(seed,out_path):
 
     fig = draw(draw_string)
 
-    fig.savefig(p, format= png, pad_inches=1)
+    fig.savefig(p, format=png, pad_inches=1)
 
     plt.close("all")
 

@@ -8,11 +8,11 @@ from Crypto.Hash import keccak
 
 # id_to_seed: Dict[int, str] = {}
 # id_to_symbol: Dict[int, int] = {}
-
-USIZE = 64
-SIZE = int(USIZE)
-HALF_SIZE = SIZE // 2
-ONE = int("1000000000",base=16)
+#
+# USIZE = 64
+# SIZE = int(USIZE)
+# HALF_SIZE = SIZE // 2
+# ONE = int("1000000000",base=16)
 
 MOTIF = {
     1: "._|X/\\#+",
@@ -43,7 +43,6 @@ def get_motif(hash_value):
     for i,b in enumerate(breakpoint):
         if index < b:
             return MOTIF[motif[i]]
-
 
 
     # if index < 20:
@@ -82,53 +81,11 @@ def gen_glyph(seed):
     for i in range(64):
         for j in range(64):
             v = (i * j * hash_value) % mod
-            v %= len(symbols)
+            v %= len(symbols) # on controle soe v est dans la plage des symboles
             output.append(symbols[v])
         output.append("\n")
 
     return "".join(output)
-
-
-
-
-    # a = keccak.new(digest_bits=256)
-    # a.update(b'{seed}')
-    # mod = (a % 11) + 5
-    # symbols = get_motif(a)
-    # # output = bytearray(USIZE * (USIZE + 3) + 30)
-    # output = []
-    #
-    # for i in range(SIZE):
-    #     y = (2 * (i - HALF_SIZE) + 1)
-    #
-    #     if a % 3 == 1:
-    #         y = -y
-    #     elif a % 3 == 2:
-    #         y = abs(y)
-    #
-    #     y = y * a
-    #
-    #     for j in range(SIZE):
-    #         x = 2 * (j-HALF_SIZE) + 1
-    #
-    #         if a%2 == 1:
-    #             x = abs(x)
-    #
-    #         x = x * a
-    #         v = int((x*y/ONE) % mod)
-    #
-    #         if v < 5:
-    #             valeur = chr(symbols[v])
-    #         else:
-    #             valeur = '.'
-    #
-    #         output.append(valeur)
-    #     output.append("\n")
-    #
-    # art = "".join(output)
-    # return art
-
-
 
 
 def draw(art):

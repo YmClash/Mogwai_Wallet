@@ -1,16 +1,13 @@
-import hashlib
-import fastapi
 from typing import Dict
 from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, Rectangle
-from substrateinterface import SubstrateInterface, Keypair, MnemonicLanguageCode, KeypairType
-from web3 import Web3
+from Crypto.Hash import keccak
 
 
 
-id_to_seed: Dict[int, str] = {}
-id_to_symbol: Dict[int, int] = {}
+# id_to_seed: Dict[int, str] = {}
+# id_to_symbol: Dict[int, int] = {}
 
 USIZE = 64
 SIZE = int(USIZE)
@@ -18,85 +15,118 @@ HALF_SIZE = SIZE // 2
 ONE = int("1000000000",base=16)
 
 MOTIF = {
-    1: bytes.fromhex('2E582F5C2e'),
-    2: bytes.fromhex('2E2B2D7C2e'),
-    3: bytes.fromhex('2E2F5C2E2e'),
-    4: bytes.fromhex('2E5C7C2D2F'),
-    5: bytes.fromhex('2E4F7C2D2e'),
-    6: bytes.fromhex('2E5C5C2E2e'),
-    7: bytes.fromhex('2E237C2D2B'),
-    8: bytes.fromhex('2E4F4F2E2e'),
-    9: bytes.fromhex('2E232E2E2e'),
-    10:bytes.fromhex('2E234F2E2e'),
+    1: "._|X/\\#+",
+    2: ".+-|.",
+    3: ".X/\\.",
+    4: "./\..",
+    5: ".\|-/",
+    6: ".O|-.",
+    7: ".\\..",
+    8: ".#|-+",
+    9: ".OO..",
+    10: ".#..#O.X.",
 }
 
 
-def get_motif(id:int):
-    index = id % 83
+def keccak_hash(seed):
+    k = keccak.new(digest_bits=256)
+    k.update(seed.encode('utf-8'))
+    return int(k.hexdigest(),16)
 
-    if index < 20:
-        motif = 1
-    elif index < 35:
-        motif = 2
-    elif index < 48:
-        motif = 3
-    elif index < 59:
-        motif = 4
-    elif index < 68:
-        motif = 5
-    elif index < 73:
-        motif = 6
-    elif index < 77:
-        motif = 7
-    elif index < 80:
-        motif = 8
-    elif index < 82:
-        motif = 9
-    else:
-        motif = 10
 
-    return MOTIF[motif]
+def get_motif(hash_value):
+    index = hash_value % 83
 
+    breakpoint = [20,35,48,59,68,73,77,80,82]
+    motif = list(MOTIF.keys())
+
+    for i,b in enumerate(breakpoint):
+        if index < b:
+            return MOTIF[motif[i]]
+
+
+
+    # if index < 20:
+    #     motif = 1
+    # elif index < 35:
+    #     motif = 2
+    # elif index < 48:
+    #     motif = 3
+    # elif index < 59:
+    #     motif = 4
+    # elif index < 68:
+    #     motif = 5
+    # elif index < 73:
+    #     motif = 6
+    # elif index < 77:
+    #     motif = 7
+    # elif index < 80:
+    #     motif = 8
+    # elif index < 82:
+    #     motif = 9
+    # else:
+    #     motif = 10
+    #
+    # return MOTIF[motif]
+    #
 
 
 
 
 def gen_glyph(seed):
-    a = Web3.toInt(Web3.solidityKeccak(['uint256'], [seed])[-20:])
-    mod = (a % 11) + 5
-    symbols = get_motif(a)
-    # output = bytearray(USIZE * (USIZE + 3) + 30)
+    hash_value = keccak_hash(seed)
+    mod = (hash_value % 11) + 5
+    symbols = get_motif(hash_value)
     output = []
 
-    for i in range(SIZE):
-        y = (2 * (i - HALF_SIZE) + 1)
-
-        if a % 3 == 1:
-            y = -y
-        elif a % 3 == 2:
-            y = abs(y)
-
-        y = y * a
-
-        for j in range(SIZE):
-            x = 2 * (j-HALF_SIZE) + 1
-
-            if a%2 == 1:
-                x = abs(x)
-
-            x = x * a
-            v = int((x*y/ONE) % mod)
-
-            if v < 5:
-                valeur = chr(symbols[v])
-            else:
-                valeur = '.'
-
-            output.append(valeur)
+    for i in range(64):
+        for j in range(64):
+            v = (i * j * hash_value) % mod
+            output.append(symbols[v])
         output.append("\n")
 
-    art = "".join(output)
-    return art
+    return "".join(output)
+
+
+
+
+
+    # a = keccak.new(digest_bits=256)
+    # a.update(b'{seed}')
+    # mod = (a % 11) + 5
+    # symbols = get_motif(a)
+    # # output = bytearray(USIZE * (USIZE + 3) + 30)
+    # output = []
+    #
+    # for i in range(SIZE):
+    #     y = (2 * (i - HALF_SIZE) + 1)
+    #
+    #     if a % 3 == 1:
+    #         y = -y
+    #     elif a % 3 == 2:
+    #         y = abs(y)
+    #
+    #     y = y * a
+    #
+    #     for j in range(SIZE):
+    #         x = 2 * (j-HALF_SIZE) + 1
+    #
+    #         if a%2 == 1:
+    #             x = abs(x)
+    #
+    #         x = x * a
+    #         v = int((x*y/ONE) % mod)
+    #
+    #         if v < 5:
+    #             valeur = chr(symbols[v])
+    #         else:
+    #             valeur = '.'
+    #
+    #         output.append(valeur)
+    #     output.append("\n")
+    #
+    # art = "".join(output)
+    # return art
 
 
 
@@ -150,21 +180,27 @@ def draw(art):
 
 
 def mint(seed,out_path):
-    p = Path(out_path)
     art = gen_glyph(seed)
 
-    draw_string = art.replace("\n","")
-    if len(set(draw_string)) == 1:
+    if len(set(art.replace("n",""))) == 1:
         raise ValueError("Maybe Glyph turn to Dust ")
 
-    fig = draw(draw_string)
+    #
+    # draw_string = art.replace("\n","")
+    # if len(set(draw_string)) == 1:
+    #     raise ValueError("Maybe Glyph turn to Dust ")
 
-    fig.savefig(p, format=png, pad_inches=1)
+    fig = draw(art)
+
+
+    fig.savefig(out_path, dpi=300 , format='png', pad_inches=0.1)
 
     plt.close("all")
 
-
-
+if __name__ == "__main__" :
+        seed = "YMC Cest un Test One Piece"
+        out_path = "output.png"
+        mint(seed, out_path)
 
     # a = int.from_bytes(keccak256(id_to_seed[id].encode()), "big")
     # output = bytearray(USIZE * (USIZE + 3) + 30)

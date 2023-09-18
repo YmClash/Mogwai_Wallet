@@ -1,5 +1,6 @@
 from itertools import product
 from Crypto.Hash import keccak
+from web3 import Web3
 
 kript = keccak.new(digest_bits=256)
 kript.update(b'Mogwai')
@@ -22,7 +23,10 @@ MOTIF = {
     10:bytes.fromhex('2E234F2E2e'),
 }
 
-print(MOTIF[1].decode(encoding='utf-8', errors='strict'))
+for i in MOTIF:
+    print(MOTIF[i].decode(encoding='utf-8', errors='strict'))
+
+
 
 
 

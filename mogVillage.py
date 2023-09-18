@@ -8,4 +8,21 @@ display_largeur = 800
 display_hauteur= 600
 
 display = pygame.display.set_mode((display_largeur, display_hauteur))
+pygame.display.set_caption("Mog Village ")
+
+running = True
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+
+pygame.quit()
+
+
+
+
+
+
 

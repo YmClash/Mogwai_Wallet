@@ -197,10 +197,10 @@ def mint(seed,out_path):
 
     plt.close("all")
 
-if __name__ == "__main__" :
-        seed = "YMC Cest un Test One Piece"
-        out_path = "output.png"
-        mint(seed, out_path)
+# if __name__ == "__main__" :
+#         seed = "YMC Cest un Test One Piece"
+#         out_path = "output.png"
+#         mint(seed, out_path)
 
     # a = int.from_bytes(keccak256(id_to_seed[id].encode()), "big")
     # output = bytearray(USIZE * (USIZE + 3) + 30)

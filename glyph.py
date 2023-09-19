@@ -136,6 +136,7 @@ def draw(art):
 
 
 
+
 def mint(seed,out_path):
     art = gen_glyph(seed)
 
@@ -152,6 +153,8 @@ def mint(seed,out_path):
     fig.savefig(out_path, dpi=300 , format='png', pad_inches=0.1)
 
     plt.close("all")
+
+
 #
 # if __name__ == "__main__" :
 #         seed = "YMC Cest un Test One Piece"

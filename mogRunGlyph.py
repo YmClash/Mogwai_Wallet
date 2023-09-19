@@ -10,6 +10,7 @@ for idx,seed in enumerate(seeds):
     mint(seed=seed, out_path=out_path)
 
 print("Done")
+
 #
 # with open("seeds.txt", "w+b") as f :
 #     seeds = [int(line[:-1]) for line in f]

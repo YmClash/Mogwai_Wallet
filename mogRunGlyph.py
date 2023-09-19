@@ -1,8 +1,5 @@
 from glyph import mint
 
-
-
-
 with open("seeds.txt", "r") as f:
     seeds = [line.strip() for line in f]
 

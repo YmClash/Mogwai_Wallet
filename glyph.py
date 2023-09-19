@@ -142,7 +142,6 @@ def mint(seed,out_path):
     if len(set(art.replace("n",""))) == 1:
         raise ValueError("Maybe Glyph turn to Dust ")
 
-    #
     # draw_string = art.replace("\n","")
     # if len(set(draw_string)) == 1:
     #     raise ValueError("Maybe Glyph turn to Dust ")

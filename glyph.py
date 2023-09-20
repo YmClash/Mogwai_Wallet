@@ -1,6 +1,7 @@
 from typing import Dict
 from pathlib import Path
 import matplotlib.pyplot as plt
+import random
 from matplotlib.patches import Circle, Rectangle
 from Crypto.Hash import keccak
 
@@ -15,23 +16,43 @@ from Crypto.Hash import keccak
 # ONE = int("1000000000",base=16)
 
 MOTIF = {
-    1: "._|X/\\#+",
+    1: "._|X/\*\#+",
     2: ".+-|.",
-    3: ".X/\\.",
-    4: "./\..",
+    3: ".X/\@\.",
+    4: "./x\..",
     5: ".\|-/",
     6: ".O|-.",
-    7: ".\\..",
+    7: ".\~x\.*.",
     8: ".#|-+",
     9: ".OO..",
     10: ".#..#O.X.",
 }
+
+# ICI je  voudrai ajoute  un motif de couleur specifique
+# a  chaque caractère  qui se trouve  dans  le dictonnaire MOTIF
+
+COLOR_MOTIFS = {}
+
+#une  coulour choisie hasard
+
+
+def random_color():
+    return (random.random(),random.random(),random.random())
+
+#une  fonction qui  genere une couleur a partir du seed
+def seed_color(seed):
+    random.seed(get_seed(keccak_hash(seed)))
+    return (random.random(),random.random(),random.random())
+
 
 
 def keccak_hash(seed):
     k = keccak.new(digest_bits=256)
     k.update(seed.encode('utf-8'))
     return int(k.hexdigest(),16)
+
+def get_seed(keccak_hash):
+    return keccak_hash()
 
 
 def get_motif(hash_value):
@@ -105,6 +126,9 @@ def draw(art):
     ax.set_xlim(-1, 65)
     ax.set_ylim(65, -1)
 
+
+    color = random_color()
+
     c = "k"
     lw = 0.9
 
@@ -113,27 +137,26 @@ def draw(art):
             if char == ".":
                 continue
             elif char == "0":
-                circle  = Circle((x+0.5, y+0.5), radius=0.5, color=c, fill=False)
+                circle  = Circle((x+0.5, y+0.5), radius=0.5, color=color, fill=True)
                 ax.add_patch(circle)
             elif char == "_":
-                ax.plot([x, x+1], [y+0.5, y+0.5], color=c, lw=lw)
+                ax.plot([x, x+1], [y+0.5, y+0.5], color=color, lw=lw)
             elif char == "|":
-                ax.plot([x+0.5, x+0.5], [y, y+1], color=c, lw=lw)
+                ax.plot([x+0.5, x+0.5], [y, y+1], color=color, lw=lw)
             elif char == "X":
-                ax.plot([x, x+1], [y, y+1], color=c, lw=lw)
-                ax.plot([x+1, x], [y, y+1], color=c, lw=lw)
+                ax.plot([x, x+1], [y, y+1], color=color, lw=lw)
+                ax.plot([x+1, x], [y, y+1], color=color, lw=lw)
             elif char == "/":
-                ax.plot([x, x+1], [y+1, y], color=c, lw=lw) #revoir ici
+                ax.plot([x, x+1], [y+1, y], color=color, lw=lw) #revoir ici
             elif char == "\\":
-                ax.plot([x, x+1], [y, y+1], color=c, lw=lw)
+                ax.plot([x, x+1], [y, y+1], color=color, lw=lw)
             elif char == "#":
-                rect = Rectangle((x, y), width=1, height=1, color=c)
+                rect = Rectangle((x, y), width=1, height=1, color=color)
                 ax.add_patch(rect)
             elif char == "+":
-                ax.plot([x+0.5, x+0.5], [y, y+1], color=c, lw=lw)
-                ax.plot([x, x+1], [y+0.5, y+0.5], color=c, lw=lw)
+                ax.plot([x+0.5, x+0.5], [y, y+1], color=color, lw=lw)
+                ax.plot([x, x+1], [y+0.5, y+0.5], color=color, lw=lw)
     return fig
-
 
 
 

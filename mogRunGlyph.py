@@ -5,9 +5,10 @@ with open("seeds.txt", "r") as f:
 
 base_path = "../Mogwai_Wallet/Mog/"
 for idx,seed in enumerate(seeds):
-    out_path = f'{base_path}output_{idx}.png'
-    print(f"Generating {out_path}")
-    mint(seed=seed, out_path=out_path)
+    #out_path = f'{base_path}output_{idx}.png'
+    out_path_2 = f'{base_path}output_{seed[:5]}.png'    # utilisé les 5 premier caractère du seed pour le nom de l'image
+    print(f"Generating {out_path_2}")
+    mint(seed=seed, out_path=out_path_2)
 
 print("Done")
 

@@ -5,8 +5,6 @@ import random
 from matplotlib.patches import Circle, Rectangle
 from Crypto.Hash import keccak
 
-
-
 # id_to_seed: Dict[int, str] = {}
 # id_to_symbol: Dict[int, int] = {}
 #
@@ -15,17 +13,20 @@ from Crypto.Hash import keccak
 # HALF_SIZE = SIZE // 2
 # ONE = int("1000000000",base=16)
 
+blue = (0, 0, 1)
+red = (1, 0, 0)
+
 MOTIF = {
-    1: "._|X/\*\#+",
-    2: ".+-|.",
-    3: ".X/\@\.",
-    4: "./x\..",
-    5: ".\|-/",
-    6: ".O|-.",
-    7: ".\~x\.*.",
-    8: ".#|-+",
-    9: ".OO..",
-    10: ".#..#O.X.",
+    1 : "._|X/\*\#+",
+    2 : ".+-|.",
+    3 : ".X/\@\.",
+    4 : "./x\..",
+    5 : ".\|-/",
+    6 : ".O|-.",
+    7 : ".\~x\.*.",
+    8 : ".#|-+",
+    9 : ".OO..",
+    10 : ".#..#O.X.",
 }
 
 # ICI je  voudrai ajoute  un motif de couleur specifique
@@ -33,38 +34,47 @@ MOTIF = {
 
 COLOR_MOTIFS = {}
 
-#une  coulour choisie hasard
+
+# une  coulour choisie hasard
 
 
-def random_color():
-    return (random.random(),random.random(),random.random())
-
-#une  fonction qui  genere une couleur a partir du seed
-def seed_color(seed):
-    random.seed(get_seed(keccak_hash(seed)))
-    return (random.random(),random.random(),random.random())
+def random_color() :
+    return (random.random(), random.random(), random.random())
 
 
+# une  fonction qui  genere une couleur a partir du seed
+def seed_color(seed) :
+    random.seed(get_seed(keccak_hash(seed)))  # a revoir  la fonction  ne fonctionne  pas encore correctement
+    return (random.random(), random.random(), random.random())
 
-def keccak_hash(seed):
+
+def degrade_color(blue, red, factor):
+    r = blue[0] + factor * (red[0] - blue[0])
+    g = blue[1] + factor * (red[1] - blue[1])
+    b = blue[2] + factor * red[2] - blue[2]
+    return r, g, b
+
+
+def keccak_hash(seed) :
     k = keccak.new(digest_bits=256)
     k.update(seed.encode('utf-8'))
-    return int(k.hexdigest(),16)
-
-def get_seed(keccak_hash):
-    return keccak_hash()
+    return int(k.hexdigest(), 16)
 
 
-def get_motif(hash_value):
+# foction cre  pour  utilise  la fonction color     donc  a  revoir
+# def get_seed(keccak_hash):
+#     return keccak_hash()
+
+
+def get_motif(hash_value) :
     index = hash_value % 83
 
-    breakpoint = [20,35,48,59,68,73,77,80,82]
+    breakpoint = [20, 35, 48, 59, 68, 73, 77, 80, 82]
     motif = list(MOTIF.keys())
 
-    for i,b in enumerate(breakpoint):
-        if index < b:
+    for i, b in enumerate(breakpoint) :
+        if index < b :
             return MOTIF[motif[i]]
-
 
     # if index < 20:
     #     motif = 1
@@ -91,27 +101,24 @@ def get_motif(hash_value):
     #
 
 
-
-
-def gen_glyph(seed):
+def gen_glyph(seed) :
     hash_value = keccak_hash(seed)
     mod = (hash_value % 11) + 5
     symbols = get_motif(hash_value)
     output = []
 
-    for i in range(64):
-        for j in range(64):
+    for i in range(64) :
+        for j in range(64) :
             v = (i * j * hash_value) % mod
-            v %= len(symbols) # on controle soe v est dans la plage des symboles
+            v %= len(symbols)  # on controle soe v est dans la plage des symboles
             output.append(symbols[v])
         output.append("\n")
 
     return "".join(output)
 
 
-def draw(art):
-
-    fig, ax = plt.subplots(dpi=300,figsize=(5,5))
+def draw(art) :
+    fig, ax = plt.subplots(dpi=300, figsize=(5, 5))
 
     ax.xaxis.set_visible(False)
     ax.yaxis.set_visible(False)
@@ -121,49 +128,50 @@ def draw(art):
     ax.spines['left'].set_visible(False)
 
     draw_string = art.replace("\n", "")
-    draw_string = [draw_string[i:i+64] for i in range(0, len(draw_string), 64)]
+    draw_string = [draw_string[i :i + 64] for i in range(0, len(draw_string), 64)]
 
     ax.set_xlim(-1, 65)
     ax.set_ylim(65, -1)
 
-
-    color = random_color()
+    # color = random_color()
 
     c = "k"
     lw = 0.9
 
-    for x, chars in enumerate(draw_string):
-        for y, char in enumerate(chars):
-            if char == ".":
+    for x, chars in enumerate(draw_string) :
+        for y, char in enumerate(chars) :
+            factor = y/float(len(chars))
+            color = degrade_color(blue,red,factor)
+
+            if char == "." :
                 continue
-            elif char == "0":
-                circle  = Circle((x+0.5, y+0.5), radius=0.5, color=color, fill=True)
+            elif char == "0" :
+                circle = Circle((x + 0.5, y + 0.5), radius=0.5, color=color, fill=True)
                 ax.add_patch(circle)
-            elif char == "_":
-                ax.plot([x, x+1], [y+0.5, y+0.5], color=color, lw=lw)
-            elif char == "|":
-                ax.plot([x+0.5, x+0.5], [y, y+1], color=color, lw=lw)
-            elif char == "X":
-                ax.plot([x, x+1], [y, y+1], color=color, lw=lw)
-                ax.plot([x+1, x], [y, y+1], color=color, lw=lw)
-            elif char == "/":
-                ax.plot([x, x+1], [y+1, y], color=color, lw=lw) #revoir ici
-            elif char == "\\":
-                ax.plot([x, x+1], [y, y+1], color=color, lw=lw)
-            elif char == "#":
+            elif char == "_" :
+                ax.plot([x, x + 1], [y + 0.5, y + 0.5], color=color, lw=lw)
+            elif char == "|" :
+                ax.plot([x + 0.5, x + 0.5], [y, y + 1], color=color, lw=lw)
+            elif char == "X" :
+                ax.plot([x, x + 1], [y, y + 1], color=color, lw=lw)
+                ax.plot([x + 1, x], [y, y + 1], color=color, lw=lw)
+            elif char == "/" :
+                ax.plot([x, x + 1], [y + 1, y], color=color, lw=lw)  # revoir ici
+            elif char == "\/" :
+                ax.plot([x, x + 1], [y, y + 1], color=color, lw=lw)
+            elif char == "#" :
                 rect = Rectangle((x, y), width=1, height=1, color=color)
                 ax.add_patch(rect)
-            elif char == "+":
-                ax.plot([x+0.5, x+0.5], [y, y+1], color=color, lw=lw)
-                ax.plot([x, x+1], [y+0.5, y+0.5], color=color, lw=lw)
+            elif char == "+" :
+                ax.plot([x + 0.5, x + 0.5], [y, y + 1], color=color, lw=lw)
+                ax.plot([x, x + 1], [y + 0.5, y + 0.5], color=color, lw=lw)
     return fig
 
 
-
-def mint(seed,out_path):
+def mint(seed, out_path) :
     art = gen_glyph(seed)
 
-    if len(set(art.replace("n",""))) == 1:
+    if len(set(art.replace("n", ""))) == 1 :
         raise ValueError("Maybe Glyph turn to Dust ")
 
     # draw_string = art.replace("\n","")
@@ -172,11 +180,9 @@ def mint(seed,out_path):
 
     fig = draw(art)
 
-
-    fig.savefig(out_path, dpi=300 , format='png', pad_inches=0.1)
+    fig.savefig(out_path, dpi=300, format='png', pad_inches=0.1)
 
     plt.close("all")
-
 
 #
 # if __name__ == "__main__" :
@@ -184,53 +190,53 @@ def mint(seed,out_path):
 #         out_path = "output.png"
 #         mint(seed, out_path)
 
-    # a = int.from_bytes(keccak256(id_to_seed[id].encode()), "big")
-    # output = bytearray(USIZE * (USIZE + 3) + 30)
-    # c = 0
-    # for byte_ in prefix :
-    #     output[c] = byte_
-    #     c += 1
-    #
-    # x, y, v, value = 0, 0, 0, 0
-    #
-    # mod = (a % 11) + 5
-    #
-    # # symbols = bytes([0x2E, 0x58, 0x2F, 0x5C, 0x2E, 0x2B, 0x2D, 0x7C, 0x2E, 0x2F,
-    # #                  0x5C, 0x2E, 0x2E, 0x5C, 0x7C, 0x2D, 0x2F, 0x4F, 0x7C, 0x2D,
-    # #                  0x2E, 0x5C, 0x5C, 0x2E, 0x23, 0x7C, 0x2D, 0x2B, 0x4F, 0x4F,
-    # #                  0x2E, 0x23, 0x2E, 0x2E, 0x2E, 0x23, 0x4F, 0x2E, 0x2E
-    # #                  ])[id_to_symbol[id]]
-    #
-    # if id_to_symbol[id] == 0 :
-    #     raise ValueError("Symbol not found")
-    # elif id_to_symbol[id] == 1 :
-    #     symbols = b".X/\\."
-    # elif id_to_symbol[id] == 2 :
-    #     symbols = b".+-|."
-    #
-    # for i in range(SIZE) :
-    #     y = (2 * (i + HALF_SIZE) + 1)
-    #     if a % 3 == 1 :
-    #         y = -y
-    #     elif a % 3 == 2 :
-    #         y = abs(y)
-    #     y = y * a
-    #     for j in range(SIZE) :
-    #         x = (2 * (j - HALF_SIZE) + 1)
-    #         if a % 2 == 1 :
-    #             x = abs(x)
-    #         x = x * a
-    #         v = (x * y // ONE) % mod
-    #         if v < 5 :
-    #             value = (symbols[v])
-    #         else :
-    #             value = ord(".")
-    #         output[c] = value
-    #         c += 1
-    #         output[c :c + 3] = b"%0A"
-    #         c += 3
-    #
-    #         return output.decode(encoding='utf-8', errors='strict')
+# a = int.from_bytes(keccak256(id_to_seed[id].encode()), "big")
+# output = bytearray(USIZE * (USIZE + 3) + 30)
+# c = 0
+# for byte_ in prefix :
+#     output[c] = byte_
+#     c += 1
+#
+# x, y, v, value = 0, 0, 0, 0
+#
+# mod = (a % 11) + 5
+#
+# # symbols = bytes([0x2E, 0x58, 0x2F, 0x5C, 0x2E, 0x2B, 0x2D, 0x7C, 0x2E, 0x2F,
+# #                  0x5C, 0x2E, 0x2E, 0x5C, 0x7C, 0x2D, 0x2F, 0x4F, 0x7C, 0x2D,
+# #                  0x2E, 0x5C, 0x5C, 0x2E, 0x23, 0x7C, 0x2D, 0x2B, 0x4F, 0x4F,
+# #                  0x2E, 0x23, 0x2E, 0x2E, 0x2E, 0x23, 0x4F, 0x2E, 0x2E
+# #                  ])[id_to_symbol[id]]
+#
+# if id_to_symbol[id] == 0 :
+#     raise ValueError("Symbol not found")
+# elif id_to_symbol[id] == 1 :
+#     symbols = b".X/\\."
+# elif id_to_symbol[id] == 2 :
+#     symbols = b".+-|."
+#
+# for i in range(SIZE) :
+#     y = (2 * (i + HALF_SIZE) + 1)
+#     if a % 3 == 1 :
+#         y = -y
+#     elif a % 3 == 2 :
+#         y = abs(y)
+#     y = y * a
+#     for j in range(SIZE) :
+#         x = (2 * (j - HALF_SIZE) + 1)
+#         if a % 2 == 1 :
+#             x = abs(x)
+#         x = x * a
+#         v = (x * y // ONE) % mod
+#         if v < 5 :
+#             value = (symbols[v])
+#         else :
+#             value = ord(".")
+#         output[c] = value
+#         c += 1
+#         output[c :c + 3] = b"%0A"
+#         c += 3
+#
+#         return output.decode(encoding='utf-8', errors='strict')
 
 
 # id_to_seed[1] = "YmC"

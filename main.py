@@ -1,4 +1,5 @@
 import mogwai
+import akili
 
 
 
@@ -9,5 +10,6 @@ import mogwai
 if __name__ == '__main__':
     print("Bienvenue dans  le Mogwai Wallet Checker")
 
-    mogwai
+    # mogwai
+    app.run(debug=True)
 

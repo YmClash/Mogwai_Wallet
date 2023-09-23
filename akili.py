@@ -1,3 +1,4 @@
+import requests
 from flask import Flask,request,jsonify
 from substrateinterface import SubstrateInterface
 from dotenv import load_dotenv
@@ -17,7 +18,9 @@ rpc_url = SubstrateInterface(url="wss://rpc-parachain.bajun.network")
 
 app = Flask(__name__)
 
-@app.route("/")
+# address = "bUMs9SouUoy36GFV4rzrUyVkKG1rTZkGBYrLMhbXUBumuTuck"
+
+# @app.route("/")
 
 
 def home():
@@ -26,6 +29,19 @@ def home():
 
 @app.route("/get-balance/<address>")
 def get_balance(address):
+
+  url = "https://www.mexc.com/open/api/v2/market/ticker?symbol=BAJU_USDT"
+  reponse = requests.get(url)
+  data = reponse.json()
+  prix_baju = float(data['data'][0]['last'])
+  getcontext().prec = 15
+  resultat =  rpc_url.query('System','Account',[address])
+  balance = Decimal(resultat.value['data']['free']) / Decimal(100 ** 12)
+  balance_format = float(format(balance,'.2f'))
+  print(address)
+  balance_usd = prix_baju * balance_format
+
+  return f"Your Balance  : {balance_format} Bajun  ~ {balance_usd:.2f}$ USD"
 
 
 if __name__ == '__main__':
